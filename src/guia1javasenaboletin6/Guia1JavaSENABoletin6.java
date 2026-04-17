@@ -16,6 +16,7 @@ public class Guia1JavaSENABoletin6 {
      */
     public static void main(String[] args) {
         // TODO code application logic here
+        Boletin6Ejercicio1.solucion();
     }
     
 }
