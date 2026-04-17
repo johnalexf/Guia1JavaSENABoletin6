@@ -1,0 +1,9 @@
+# NetBeans específico
+nbproject/private/
+build/
+nbdist/
+dist/
+
+# Archivos de sistema
+Thumbs.db
+.DS_Store
