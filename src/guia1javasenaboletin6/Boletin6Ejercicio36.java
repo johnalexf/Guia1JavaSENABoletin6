@@ -16,6 +16,7 @@ public class Boletin6Ejercicio36 {
     public static final int SF = 0;
     
     public static final int[] FICHAS_NEGRAS = new int[] { DN, TN, AN, CN, PN };
+    public static final int[] FICHAS_BLANCAS = new int[] { DB, TB, AB, CB, PB };
     /*
     NOMENCLATURA:
         B - ficha blanca
@@ -44,14 +45,60 @@ public class Boletin6Ejercicio36 {
                 "de las constantes PB (peón blanco), TN (torre negra), etc. (P, T, C, A, R, D). Dicho módulo debe\n" +
                 "devolver un valor booleano, que indique si el rey negro está amenazado.");
     
-        System.out.printf("%n%n El rey %s esta amenzado %n%n", estaReyNegroAmenazado(juego) ? "SI" : "NO");
+        System.out.printf("%n%n El rey %s esta amenzado %n%n", estaReyNegroEnJaque(juego) ? "SI" : "NO");
+        
+        System.out.printf("%n%n El rey %s esta en jaque mate %n%n", estaReyNegroEnJaqueMate(juego) ? "SI" : "NO");
+        
     }
     
-    public static boolean estaReyNegroAmenazado (int [][] juego){
+    public static boolean estaReyNegroEnJaque (int[][] juego){
     
         int[] posicionReyNegro = buscarPosicionReyNegro(juego);
         int posFila_Rey = posicionReyNegro[0];
         int posCol_Rey = posicionReyNegro[1];
+    
+        return estaReyNegroAmenazado(juego, posFila_Rey, posCol_Rey);
+    
+    }
+    
+    public static boolean estaReyNegroEnJaqueMate (int[][] juego){
+    
+        if( estaReyNegroEnJaque(juego) ){
+        
+            int[] posicionReyNegro = buscarPosicionReyNegro(juego);
+            int posFila_Rey = posicionReyNegro[0];
+            int posCol_Rey = posicionReyNegro[1];
+            
+            //dejamos la posicion del rey sin ficha para al momento de evaluar las posibilidades de movimiento
+            //se tenga en cuenta que el rey ya no esta en esta posicion.
+            juego[posFila_Rey][posCol_Rey] = SF;
+            
+            for(int filaAEvaluar = posFila_Rey - 1 ; filaAEvaluar <= posFila_Rey + 1  ; filaAEvaluar++){
+            if( filaOColumnaValida(filaAEvaluar) )
+                for(int colAEvaluar = posCol_Rey - 1 ; colAEvaluar <= posCol_Rey + 1 ; colAEvaluar++){
+                    
+                    if( casillaDentroDeColumnasSinLaPosicionDelRey(posFila_Rey, posCol_Rey, filaAEvaluar, colAEvaluar)){
+                        int casilla = juego[filaAEvaluar][colAEvaluar];
+                        if(  estaCasillaSinFicha(casilla) || estaCasillaConFichaBlanca(casilla)  )
+                            if(!estaReyNegroAmenazado(juego, filaAEvaluar, colAEvaluar)){
+                                juego[posFila_Rey][posCol_Rey] = RN;
+                               return false;
+                            }
+                    } 
+                }
+            }
+
+            juego[posFila_Rey][posCol_Rey] = RN;
+            return true;
+
+            
+        }
+        
+        return false;
+    
+    }
+    
+    public static boolean estaReyNegroAmenazado (int [][] juego, int posFila_Rey, int posCol_Rey){
     
         for(int filaAEvaluar = posFila_Rey - 1 ; filaAEvaluar <= posFila_Rey + 1  ; filaAEvaluar++){
             if( filaOColumnaValida(filaAEvaluar) )
@@ -218,6 +265,13 @@ public class Boletin6Ejercicio36 {
     public static boolean estaCasillaConFichaNegra( int casilla ){
         for( int fichaNegra : FICHAS_NEGRAS){
             if(fichaNegra == casilla) return true;
+        }
+        return false;
+    }
+    
+    public static boolean estaCasillaConFichaBlanca( int casilla ){
+        for( int fichaBlanca : FICHAS_BLANCAS){
+            if(fichaBlanca == casilla) return true;
         }
         return false;
     }
