@@ -28,7 +28,7 @@ public class Boletin6Ejercicio36 {
         { TN , CN , AN , DN , RN , AN , CN , TN }, // fila 0
         { PN , PN , PN , PN , PN , PN , PN , PN }, // fila 1
         { SF , SF , SF , SF , SF , SF , SF , SF },
-        { SF , SF , SF , SF , SF , SF , SF , SF },
+        { SF , SF , SF , SF , SF , SF , SF , SF }, 
         { SF , SF , SF , SF , SF , SF , SF , SF },
         { SF , SF , SF , SF , SF , SF , SF , SF },
         { PB , PB , PB , PB , PB , PB , PB , PB },
@@ -110,7 +110,7 @@ public class Boletin6Ejercicio36 {
                                 true
             );
     
-        return verificarAmenazaEnCasillasDiagonales(
+        return verificarAmenazasSegunCuadrante(
                                 juego, 
                                 filaAEValuar, 
                                 colAEvaluar, 
@@ -144,6 +144,28 @@ public class Boletin6Ejercicio36 {
         
     }
     
+    public static boolean verificarAmenazasSegunCuadrante (int[][] juego, int filaAVerificar, int colAVerificar, int sentidoFila, int sentidoColumna, boolean verificarPeon){
+        
+        if (verificarAmenazaEnCasillasDiagonales(
+                                juego, 
+                                filaAVerificar, 
+                                colAVerificar, 
+                                sentidoFila, 
+                                sentidoColumna, 
+                                verificarPeon )
+            )
+            return true;
+        else
+            return verificarAmenazaCaballosEnDireccionDiagonal(
+                                juego, 
+                                filaAVerificar, 
+                                colAVerificar, 
+                                sentidoFila, 
+                                sentidoColumna );
+        
+    }
+    
+     
     public static boolean verificarAmenazaEnCasillasDiagonales(int[][] juego, int filaAVerificar, int colAVerificar, int sentidoFila, int sentidoColumna, boolean verificarPeon){
         
         while( filaOColumnaValida(filaAVerificar) && filaOColumnaValida(colAVerificar) ){
@@ -168,6 +190,24 @@ public class Boletin6Ejercicio36 {
         return false;
         
     }
+    
+    public static boolean verificarAmenazaCaballosEnDireccionDiagonal (int[][] juego, int filaAVerificar, int colAVerificar, int sentidoFila, int sentidoColumna){
+        
+        return verificarAmenazaCaballo(juego, filaAVerificar, colAVerificar + sentidoColumna) ||
+                verificarAmenazaCaballo(juego, filaAVerificar + sentidoFila, colAVerificar) ;
+        
+    }
+    
+    public static boolean verificarAmenazaCaballo (int[][] juego, int filaAVerificar, int colAVerificar){
+    
+        if( filaOColumnaValida(filaAVerificar) && filaOColumnaValida(colAVerificar) ){
+            int casillaAEvaluar = juego[filaAVerificar][colAVerificar];
+            return estaCaballoBlanco(casillaAEvaluar);
+        }
+        return false;
+    }
+    
+    
     
      
    
