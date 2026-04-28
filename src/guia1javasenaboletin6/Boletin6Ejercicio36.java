@@ -44,7 +44,7 @@ public class Boletin6Ejercicio36 {
                 "de las constantes PB (peón blanco), TN (torre negra), etc. (P, T, C, A, R, D). Dicho módulo debe\n" +
                 "devolver un valor booleano, que indique si el rey negro está amenazado.");
     
-    
+        System.out.printf("%n%n El rey %s esta amenzado %n%n", estaReyNegroAmenazado(juego) ? "SI" : "NO");
     }
     
     public static boolean estaReyNegroAmenazado (int [][] juego){
@@ -58,8 +58,8 @@ public class Boletin6Ejercicio36 {
                 for(int colAEvaluar = posCol_Rey - 1 ; colAEvaluar <= posCol_Rey + 1 ; colAEvaluar++){
                     
                     if( casillaDentroDeColumnasSinLaPosicionDelRey(posFila_Rey, posCol_Rey, filaAEvaluar, colAEvaluar))
-                        
-                       if(verificarAmenazaEnDireccionA(juego, posFila_Rey, posCol_Rey, filaAEvaluar, colAEvaluar ))
+                       
+                        if(verificarAmenazaEnDireccionA(juego, posFila_Rey, posCol_Rey, filaAEvaluar, colAEvaluar ))
                            return true;
                         
                 }
@@ -69,7 +69,7 @@ public class Boletin6Ejercicio36 {
     }
     
     public static boolean casillaDentroDeColumnasSinLaPosicionDelRey (int reyFila, int reyCol , int filaAEvaluar, int colAEvaluar){
-        return ( (filaOColumnaValida(colAEvaluar))  &&  (filaAEvaluar != reyFila && colAEvaluar != reyCol ) );
+        return ( (filaOColumnaValida(colAEvaluar))  &&  !(filaAEvaluar == reyFila && colAEvaluar == reyCol ) );
     }
     
     public static boolean filaOColumnaValida(int filaOCol){
@@ -90,8 +90,8 @@ public class Boletin6Ejercicio36 {
     }
     
     public static boolean verificarAmenazaEnDireccionA(int[][] juego, int reyFila, int reyCol , int filaAEValuar, int colAEvaluar){
-    
-        if(reyFila == filaAEValuar)
+        
+        if(reyFila == filaAEValuar)            
             return verificarAmenazaEnCasillasRectasSegunEje(
                                 juego,
                                 filaAEValuar, 
@@ -106,10 +106,10 @@ public class Boletin6Ejercicio36 {
                                 juego,
                                 colAEvaluar, 
                                 filaAEValuar, 
-                                definirSentido(reyCol, colAEvaluar),
+                                definirSentido(reyFila, filaAEValuar),
                                 true
             );
-    
+        
         return verificarAmenazasSegunCuadrante(
                                 juego, 
                                 filaAEValuar, 
@@ -127,11 +127,11 @@ public class Boletin6Ejercicio36 {
     
     
     public static boolean verificarAmenazaEnCasillasRectasSegunEje(int[][] juego, int posFija, int posVariable, int sentido, boolean esVariableFila){
-        
+
         while( filaOColumnaValida(posVariable) ){
             
             int casillaAEvaluar = (esVariableFila)? juego[posVariable][posFija] : juego[posFija][posVariable] ;
-            
+
             if( !estaCasillaSinFicha(casillaAEvaluar) )
                 if( estaCasillaConFichaNegra( casillaAEvaluar ) ) return false;
                 else return ( ( estaDamaBlanca(casillaAEvaluar) )||( estaTorreBlanca(casillaAEvaluar) ) ) ;
@@ -176,14 +176,14 @@ public class Boletin6Ejercicio36 {
                 if( estaCasillaConFichaNegra( casillaAEvaluar ) ) return false;
                 else{
                     if(verificarPeon){
-                        verificarPeon = false;
-                        return estaPeonBlanco(casillaAEvaluar);
+                        if (estaPeonBlanco(casillaAEvaluar)) return true;
                     }
                     return ( estaAlfilBlanco(casillaAEvaluar) || estaDamaBlanca(casillaAEvaluar) );
                 }
                  
             filaAVerificar += sentidoFila;
             colAVerificar += sentidoColumna;
+            verificarPeon = false;
             
         }
         

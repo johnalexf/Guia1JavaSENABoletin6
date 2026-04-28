@@ -48,7 +48,8 @@ public class Guia1JavaSENABoletin6 {
         //Boletin6Ejercicio32.solucion();
         //Boletin6Ejercicio33.solucion();
         //Boletin6Ejercicio34.solucion();
-        Boletin6Ejercicio35.solucion();
+        //Boletin6Ejercicio35.solucion();
+        Boletin6Ejercicio36.solucion();
         
     }
     
